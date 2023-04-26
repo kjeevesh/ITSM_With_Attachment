@@ -1,0 +1,11 @@
+{
+    "jira_url": "http://20.219.158.93:9000",
+    "jira_issueEndpoint": "/rest/api/2/issue/",
+
+
+    "elastic_url": "http://elastictest.strangled.net",
+    "elastic_index": "/sap_sample_data",
+    "elastic_type": "/_doc/",
+
+    "kibana-url": "http://kibanatest.stangled.net"
+}
