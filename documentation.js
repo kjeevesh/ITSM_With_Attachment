@@ -122,7 +122,7 @@ const swaggerDocumentation = {
                                         example : "ZBUS001",
                 
                                         },
-                                    PROGRAM_NAME : {
+                                    SEVERITY : {
                                             type: "string",
                                             description: "Severity of the ticket",
                                             example : "HIGH",

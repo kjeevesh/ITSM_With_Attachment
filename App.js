@@ -22,6 +22,7 @@ app.get('/', function(req, res){
 
 app.post('/Ticket/API/Create_Ticket', jsonParser, function(req, res) {
   var sapInputdata = req.body;
+  console.log(sapInputdata);
   const credentials = require("./creds.json");
   const auth = require("./jiraAuth.json");
   const jiraUrl = credentials.jira_url;
@@ -45,7 +46,7 @@ app.post('/Ticket/API/Create_Ticket', jsonParser, function(req, res) {
         } else {
           errors.push(status); // add the error status code to the errors array
         }
-        if (i === arrayLength) {
+        if (i === arrayLength-1) {
           if (errors.length > 0) {
             res.status(errors[0]).send(errors); // return the first error status code to the client
           } else {
