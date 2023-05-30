@@ -268,9 +268,9 @@ app.get('/', function(req, res) {
 //     });
 // }
 
-const upload = multer({ dest: 'uploads/' });
+//const upload = multer({ dest: 'uploads/' });
 
-app.post('/Ticket/API/Create_Ticket', jsonParser, upload.array('attachments'),function(req, res) {
+app.post('/Ticket/API/Create_Ticket', jsonParser,function(req, res) {
   attachments=req.files;
   console.log(attachments)
   var sapInputdata = req.body;
