@@ -317,7 +317,7 @@ app.post('/Ticket/API/Create_Ticket', jsonParser, function(req, res) {
         console.log(`Jira ticket created successfully`);
         if (currentSap.attachments) {
           //console.log(`${issueKey}`)
-          const attachmentUrl = jiraUrl + `/rest/api/2/issue/SAP-50/attachments`;
+          //const attachmentUrl = jiraUrl + `/rest/api/2/issue/SAP-50/attachments`;
           //console.log(`${attachmentUrl}`)
           for (const attachment of currentSap.attachments) {
             const apiUrl = 'http://104.43.93.17:9000/rest/api/2/issue/' + issueKey + '/attachments';

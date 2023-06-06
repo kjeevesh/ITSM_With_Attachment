@@ -1,5 +1,6 @@
 //srinivas
 var express = require('express');
+const multer = require('multer');
 const libraries = require("./ITSM_lib.js");
 const swaggerDoc = require("swagger-ui-express");
 const swaggerDocumentation = require ("./documentation")
@@ -10,6 +11,7 @@ var jsonParser = bodyParser.json();
 
 const PORT = 7777;
 
+const upload = multer({ dest: 'uploads/' });
 
 app.use("/documentations", swaggerDoc.serve);
 app.use("/documentations", swaggerDoc.setup(swaggerDocumentation));
@@ -20,9 +22,9 @@ app.get('/', function(req, res){
     res.send('JIRA SERVER HOMEPAGE');
 });
 
-app.post('/Ticket/API/Create_Ticket', jsonParser, function(req, res) {
+app.post('/Ticket/API/Create_Ticket', jsonParser,upload.single('attachments'), function(req, res) {
   var sapInputdata = req.body;
-  var attachmnets = req.files
+  var attachments = req.files
   console.log(sapInputdata);
   const credentials = require("./creds.json");
   const auth = require("./jiraAuth.json");

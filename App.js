@@ -170,13 +170,16 @@ var express = require('express');
 const libraries = require("./ITSM_lib.js");
 const swaggerDoc = require("swagger-ui-express");
 const swaggerDocumentation = require("./documentation");
+const multer = require('multer');
 const axios = require('axios');
 const fs = require('fs');
 const FormData = require('form-data');
+const upload = multer();
 
 var app = express();
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
+
 
 const PORT = 7777;
 
@@ -270,9 +273,7 @@ app.get('/', function(req, res) {
 
 //const upload = multer({ dest: 'uploads/' });
 
-app.post('/Ticket/API/Create_Ticket', jsonParser,function(req, res) {
-  attachments=req.files;
-  console.log(attachments)
+app.post('/Ticket/API/Create_Ticket', upload.single('file'),(req, res) => {
   var sapInputdata = req.body;
   console.log(sapInputdata);
   const credentials = require("./creds.json");
@@ -317,34 +318,29 @@ app.post('/Ticket/API/Create_Ticket', jsonParser,function(req, res) {
       // });
       if (status === 200 || status === 201) {
         console.log(`Jira ticket created successfully`);
-        if (currentSap.attachments) {
-          //console.log(`${issueKey}`)
-          //const attachmentUrl = jiraUrl + `/rest/api/2/issue/SAP-50/attachments`;
-          //console.log(`${attachmentUrl}`)
-          for (const attachment of currentSap.attachments) {
-            const FormData = require('form-data');
-            const fs = require('fs');
-            const filePath = '/home/jeevesh/Desktop/test.xlsx';
-            const apiUrl = 'http://104.43.93.17:9000/rest/api/2/issue/' + issueKey + '/attachments';
+        if(req.file) {
+          const apiUrl = 'http://104.43.93.17:9000/rest/api/2/issue/' + issueKey + '/attachments';
 
-            const form = new FormData();
-            form.append('file', fs.createReadStream(filePath));
+    const form = new FormData();
+    form.append('file', file.buffer, { filename: file.originalname }); // Send the processed file
 
-            axios.post(apiUrl, form, {
-              auth:auth,
-              headers: {
-                'X-Atlassian-Token': 'nocheck',
-                'Content-Type': `multipart/form-data; boundary=${form._boundary}`,
-              },
-            })
-              .then(response => {
-                console.log('Attachment uploaded successfully:', response.data);
-              })
-              .catch(error => {
-                console.error('Error uploading attachment:', error);
-              });
-          }
-        }
+    axios.post(apiUrl, form, {
+      auth:auth,
+      headers: {
+        'X-Atlassian-Token': 'nocheck',
+        'Content-Type': `multipart/form-data; boundary=${form._boundary}`,
+      },
+    })
+      .then(response => {
+        console.log('Attachment uploaded successfully:', response.data);
+        res.sendStatus(200);
+      })
+      .catch(error => {
+        console.error('Error uploading attachment:', error);
+        res.sendStatus(500);
+      });
+  }
+
       } else {
         errors.push(status); // add the error status code to the errors array
       }
