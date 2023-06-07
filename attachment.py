@@ -4,7 +4,7 @@ import requests
 def send_file_and_json(filename, json_data, url):
     with open(filename, 'rb') as file:
         files = {'file': file}
-        data = json_data
+        data = {'json_data': json.dumps([json_data])}
         response = requests.post(url, files=files, data=data)
     
     if response.status_code == 200:
