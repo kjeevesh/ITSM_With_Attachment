@@ -4,9 +4,9 @@ function jiraTicket(sap_data, severity){
     // declare the jira ticket schema
     const jiraSchema = require("./jiraSchema.json"); 
    
-
+    console.log(jiraSchema)
     var summary = sap_data.EVENT_CLASS + " - " + sap_data.RISK_DESCRIPTION;
-    
+    //console.log(sap_data[0].EVENT_CLASS)
     // now perform the data dumping in real time
     // Update the jiraSchema object with SAP data
     jiraSchema.fields.summary = summary;
